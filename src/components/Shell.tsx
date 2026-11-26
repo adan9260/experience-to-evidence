@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import type { User } from "@supabase/supabase-js";
+import { supabase } from "@/integrations/supabase/client";
 import { Check, Copy } from "lucide-react";
 import { personas, useProfile } from "@/lib/profile";
 
@@ -9,6 +11,17 @@ const nav = [
   { to: "/networking", label: "Networking Builder" },
   { to: "/plan", label: "My 7-Day Plan" },
 ] as const;
+
+function AuthButton() {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    void supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    const { data } = supabase.auth.onAuthStateChange((_e, s) => setUser(s?.user ?? null));
+    return () => data.subscription.unsubscribe();
+  }, []);
+  if (!user) return <Link to="/auth" className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90">Sign in</Link>;
+  return <button onClick={() => void supabase.auth.signOut()} className="rounded-md border px-3 py-1.5 text-sm hover:bg-accent" title={user.email ?? ""}>Sign out</button>;
+}
 
 export function Shell({ children }: { children: ReactNode }) {
   return (
@@ -20,6 +33,7 @@ export function Shell({ children }: { children: ReactNode }) {
             {nav.map((n) => (
               <Link key={n.to} to={n.to} activeOptions={{ exact: true }} className="rounded-md px-3 py-1.5 text-muted-foreground hover:bg-accent" activeProps={{ className: "bg-accent text-accent-foreground font-medium" }}>{n.label}</Link>
             ))}
+            <AuthButton />
           </nav>
         </div>
       </header>
@@ -33,7 +47,7 @@ export function PersonaBar() {
   const [, setP] = useProfile();
   return (
     <div className="mb-6 rounded-xl border bg-secondary p-4">
-      <p className="mb-2 text-sm font-medium">Load a sample persona:</p>
+      <p className="mb-2 text-sm font-medium">Try a ready-made persona:</p>
       <div className="flex flex-wrap gap-2">
         {personas.map(({ label, ...p }) => (
           <button key={label} onClick={() => setP(p)} className="rounded-full border border-primary/40 bg-background px-3 py-1 text-sm hover:bg-accent">{label}</button>

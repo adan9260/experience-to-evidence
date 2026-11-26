@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as NetworkingRouteImport } from './routes/networking'
 import { Route as PlanRouteImport } from './routes/plan'
 import { Route as TranslatorRouteImport } from './routes/translator'
@@ -17,6 +18,11 @@ import { Route as TranslatorRouteImport } from './routes/translator'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NetworkingRoute = NetworkingRouteImport.update({
@@ -37,12 +43,14 @@ const TranslatorRoute = TranslatorRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/networking': typeof NetworkingRoute
   '/plan': typeof PlanRoute
   '/translator': typeof TranslatorRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/networking': typeof NetworkingRoute
   '/plan': typeof PlanRoute
   '/translator': typeof TranslatorRoute
@@ -50,20 +58,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/networking': typeof NetworkingRoute
   '/plan': typeof PlanRoute
   '/translator': typeof TranslatorRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/networking' | '/plan' | '/translator'
+  fullPaths: '/' | '/auth' | '/networking' | '/plan' | '/translator'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/networking' | '/plan' | '/translator'
-  id: '__root__' | '/' | '/networking' | '/plan' | '/translator'
+  to: '/' | '/auth' | '/networking' | '/plan' | '/translator'
+  id: '__root__' | '/' | '/auth' | '/networking' | '/plan' | '/translator'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   NetworkingRoute: typeof NetworkingRoute
   PlanRoute: typeof PlanRoute
   TranslatorRoute: typeof TranslatorRoute
@@ -76,6 +86,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/networking': {
@@ -104,6 +121,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   NetworkingRoute: NetworkingRoute,
   PlanRoute: PlanRoute,
   TranslatorRoute: TranslatorRoute,

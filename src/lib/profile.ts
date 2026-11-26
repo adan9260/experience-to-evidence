@@ -124,7 +124,7 @@ export function plan(p: Profile) {
     ["Digital Presence", "Update your LinkedIn headline, About section and photo with your new summary."],
     ["Identify Allies", `List 10 people: mentors, recruiters and peers in ${g}. Include refugee-support networks.`],
     ["Outreach Sprint", "Send 5 personalised messages using the Networking Builder."],
-    ["Evidence / Portfolio Snippet", `Create a one-page case study or sample showing ${sk} in action.`],
+    ["Evidence / Portfolio Snippet", `Create a one-page case study or example showing ${sk} in action.`],
     ["Local Community", "Attend one meetup, volunteer session or professional association event."],
     ["Follow-up & Review", "Follow up politely with contacts, note responses and plan next week."],
   ] as const;
