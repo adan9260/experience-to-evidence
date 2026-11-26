@@ -24,7 +24,7 @@ export function Shell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-      <footer className="border-t py-6 text-center text-sm text-muted-foreground">Supporting SDG 8 Decent Work · SDG 10 Reduced Inequalities · SDG 17 Partnerships — all data stays in your browser.</footer>
+      <footer className="border-t py-6 text-center text-sm text-muted-foreground">Supporting SDG 8 Decent Work · SDG 10 Reduced Inequalities · SDG 17 Partnerships.</footer>
     </div>
   );
 }
@@ -33,7 +33,7 @@ export function PersonaBar() {
   const [, setP] = useProfile();
   return (
     <div className="mb-6 rounded-xl border bg-secondary p-4">
-      <p className="mb-2 text-sm font-medium">Quick demo — load a sample persona:</p>
+      <p className="mb-2 text-sm font-medium">Load a sample persona:</p>
       <div className="flex flex-wrap gap-2">
         {personas.map(({ label, ...p }) => (
           <button key={label} onClick={() => setP(p)} className="rounded-full border border-primary/40 bg-background px-3 py-1 text-sm hover:bg-accent">{label}</button>
